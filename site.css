@@ -1,0 +1,909 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+}
+
+/* ===== FUNDO ESTRELADO ===== */
+body {
+    background: #000;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(1px 1px at 10px 20px, #ffffff, transparent 50%),
+        radial-gradient(1px 1px at 80px 120px, #ffffff, transparent 50%),
+        radial-gradient(1px 1px at 150px 60px, #ffffff, transparent 50%),
+        radial-gradient(1px 1px at 200px 180px, #ffffff, transparent 50%),
+        radial-gradient(1px 1px at 250px 40px, #ffffff, transparent 50%),
+        radial-gradient(1px 1px at 300px 160px, #ffffff, transparent 50%);
+    background-size: 250px 250px;
+    background-repeat: repeat;
+    opacity: 0.9;
+}
+
+.tela {
+    position: fixed;
+    inset: 0;
+    transition: transform 1s ease, opacity 1s ease;
+}
+
+.tela-intro {
+    background: transparent;
+    z-index: 10;
+}
+
+.tela-conteudo {
+    background: transparent;
+    display: block;
+    color: white;
+    transform: translateY(100%);
+    /* permite que o conteúdo (linha do tempo) role sem ficar preso em um quadrado */
+    overflow-y: auto;
+}
+
+/* Animações */
+.tela-intro.sair {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.tela-conteudo.entrar {
+    transform: translateY(0);
+}
+
+/* ===== FUNDO COM CORAÇÕES ===== */
+
+.hearts span {
+    position: absolute;
+    bottom: -40px;
+    font-size: 24px;
+    animation: subir 10s linear infinite;
+    color: transparent;
+    text-shadow:
+        0 0 5px #ff4da6,
+        0 0 10px #ff4da6,
+        0 0 20px #ff4da6;
+}
+
+.hearts span::before {
+    content: "♡";
+    color: transparent;
+    -webkit-text-stroke: 1px #ff4da6;
+}
+
+.hearts span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.hearts span:nth-child(2) { left: 20%; animation-delay: 2s; }
+.hearts span:nth-child(3) { left: 30%; animation-delay: 4s; }
+.hearts span:nth-child(4) { left: 40%; animation-delay: 1s; }
+.hearts span:nth-child(5) { left: 50%; animation-delay: 3s; }
+.hearts span:nth-child(6) { left: 60%; animation-delay: 5s; }
+.hearts span:nth-child(7) { left: 70%; animation-delay: 2.5s; }
+.hearts span:nth-child(8) { left: 80%; animation-delay: 4.5s; }
+
+@keyframes subir {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+    }
+}
+
+/* ===== CONTEÚDO CENTRAL ===== */
+
+.container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+/* ===== ENVELOPE ===== */
+
+.envelope {
+    width: 200px;
+    height: 130px;
+    background: linear-gradient(135deg, #ff7abf, #ff4da6);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+        0 0 15px #ff4da6,
+        0 0 30px #ff4da6;
+    transition: transform 0.3s ease;
+}
+
+.envelope:hover {
+    transform: scale(1.05);
+}
+
+/* Aba */
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 65px solid rgba(255,255,255,0.3);
+}
+
+/* Coração central */
+.envelope::after {
+    content: "♥";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ff0055;
+    font-size: 28px;
+    text-shadow:
+        0 0 5px #ff0055,
+        0 0 15px #ff0055,
+        0 0 25px #ff0055;
+}
+
+.texto {
+    margin-top: 15px;
+    color: white;
+    font-size: 13px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+.player {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 77, 166, 0.15);
+    border: 1px solid #ff4da6;
+    padding: 6px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255,77,166,0.6);
+}
+
+.player button {
+    background: none;
+    border: none;
+    color: #ff4da6;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.player span {
+    color: white;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.music-player {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 140px;
+    background: rgba(255, 77, 166, 0.15);
+    border: 1px solid #ff4da6;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 15px rgba(255,77,166,0.5);
+    backdrop-filter: blur(6px);
+}
+
+.nomemusica{
+    margin-left: 50px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Disco */
+.vinil {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: black;
+    top: -20px;
+    left: -20px;
+    border: 3px solid #ff4da6;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255,77,166,0.8);
+    transform-origin: center center;
+}
+
+.vinil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Classe que ativa a rotação */
+.vinil.girando {
+    animation: girar 4s linear infinite;
+    animation-play-state: paused;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Controles */
+.controles {
+    display: flex;
+    gap: 12px;
+}
+
+.controles button {
+    background: none;
+    border: none;
+    color: #ff4da6;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* Barra de progresso */
+.progresso {
+    width: 85%;
+    height: 5px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.barra {
+    height: 100%;
+    width: 0%;
+    background: #ff4da6;
+}
+
+/* Tempo */
+.tempo {
+    font-size: 11px;
+    color: white;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+/* ===== Textinho ===== */
+
+.titulo-textinho{
+    position: relative;
+    margin: 200px auto 0;
+    padding: 0 12px;
+}
+
+.titulo-textinho h1{
+    font-size: 15px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-align: left;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.titulo-textinho h1::before{
+    content: "✦";
+    font-size: 18px;
+    color: #ff4da6;
+    text-shadow: 0 0 8px #ff4da6;
+}
+
+.titulo-textinho h2{
+    font-size: 15px;
+}
+/* ===== LINHA DO TEMPO ===== */
+.linha-do-tempo{
+    position: relative;
+    margin: 180px auto 0;
+    width: min(620px, calc(100vw - 32px));
+    color: white;
+    padding: 0 8px;
+}
+
+.linha-do-tempo > h1{
+    font-size: 24px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    text-align: left;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.linha-do-tempo > h1::before{
+    content: "✦";
+    font-size: 18px;
+    color: #ff4da6;
+    text-shadow: 0 0 8px #ff4da6;
+}
+
+.timeline{
+    position: relative;
+    padding-left: 18px;
+    margin-top: 4px;
+}
+
+.timeline::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 4px;
+    width: 2px;
+    background: linear-gradient(to bottom, #ff4da6, rgba(255,77,166,0.1));
+    opacity: 0.9;
+}
+
+.timeline-item{
+    position: relative;
+    margin-bottom: 14px;
+    padding-left: 12px;
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.timeline-item.visivel{
+    animation: timelineFadeIn 0.6s ease forwards;
+}
+
+.timeline-item:nth-child(1){
+    animation-delay: 0.05s;
+}
+.timeline-item:nth-child(2){
+    animation-delay: 0.12s;
+}
+.timeline-item:nth-child(3){
+    animation-delay: 0.19s;
+}
+.timeline-item:nth-child(4){
+    animation-delay: 0.26s;
+}
+.timeline-item:nth-child(5){
+    animation-delay: 0.33s;
+}
+
+.timeline-dot{
+    position: absolute;
+    left: -2px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, #ff4da6);
+    box-shadow:
+        0 0 6px rgba(255,77,166,0.9),
+        0 0 14px rgba(255,77,166,0.9);
+    animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+.timeline-card{
+    background: radial-gradient(circle at top left, rgba(255,77,166,0.32), rgba(0,0,0,0.75));
+    border-radius: 12px;
+    border: 1px solid rgba(255,77,166,0.55);
+    padding: 10px 12px 10px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.timeline-card:hover{
+    transform: translateY(-2px);
+    border-color: rgba(255,77,166,0.9);
+    box-shadow:
+        0 0 14px rgba(255,77,166,0.8),
+        0 0 24px rgba(0,0,0,0.9);
+    background: radial-gradient(circle at top left, rgba(255,77,166,0.5), rgba(0,0,0,0.9));
+}
+
+.timeline-data{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    opacity: 0.9;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.timeline-data::before{
+    content: "⏳";
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.timeline-titulo{
+    font-size: 15px;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+}
+
+.timeline-texto{
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0.95;
+}
+
+/* Mídia (imagem) dentro do card da timeline */
+.timeline-media{
+    margin: 8px 0 10px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.timeline-img{
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(255,77,166,0.45);
+    box-shadow: 0 0 12px rgba(255,77,166,0.18);
+}
+
+.timeline-media.placeholder{
+    border: 1px dashed rgba(255,77,166,0.7);
+    background: rgba(0,0,0,0.35);
+    padding: 12px;
+    display: grid;
+    gap: 6px;
+    place-items: start;
+}
+
+.timeline-media.placeholder span{
+    font-size: 12px;
+    opacity: 0.95;
+}
+
+.timeline-media.placeholder small{
+    font-size: 11px;
+    opacity: 0.75;
+}
+
+@keyframes timelineFadeIn{
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseDot{
+    0%, 100%{
+        transform: scale(1);
+        box-shadow:
+            0 0 6px rgba(255,77,166,0.9),
+            0 0 14px rgba(255,77,166,0.9);
+    }
+    50%{
+        transform: scale(1.15);
+        box-shadow:
+            0 0 10px rgba(255,77,166,1),
+            0 0 20px rgba(255,77,166,1);
+    }
+}
+
+@media (max-width: 480px){
+    .linha-do-tempo{
+        /* empurra tudo para baixo só com margem (sem usar top, para não sobrepor a caixinha) */
+        margin: 15px auto 0;
+        width: calc(100vw - 26px);
+    }
+
+    .linha-do-tempo > h1{
+        font-size: 20px;
+        letter-spacing: 1.5px;
+    }
+
+    .timeline-card{
+        padding: 9px 10px 9px;
+    }
+
+    .timeline-titulo{
+        font-size: 14px;
+    }
+
+    .timeline-texto{
+        font-size: 11px;
+    }
+
+    .timeline-img{
+        height: 150px;
+    }
+}
+
+/* ===== TEMPO JUNTOS ===== */
+.tempo-juntos{
+    width: min(520px, calc(100vw - 30px));
+    max-width: 520px;
+    margin: 24px auto 0;
+    padding: 14px 16px 12px;
+    border-radius: 16px;
+    background: radial-gradient(circle at top left, rgba(255,77,166,0.35), rgba(0,0,0,0.9));
+    border: 1px solid rgba(255,77,166,0.9);
+    color: white;
+    text-align: center;
+    box-shadow:
+        0 0 12px rgba(255,77,166,0.5),
+        0 0 24px rgba(0,0,0,0.9);
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.tempo-juntos.visivel{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.tempo-juntos-label{
+    font-size: 11px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    margin-bottom: 2px;
+}
+
+.tempo-juntos h2{
+    font-size: 15px;
+    letter-spacing: 1.2px;
+    margin-bottom: 10px;
+}
+
+.tempo-juntos-grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.tempo-juntos-card{
+    padding: 8px 6px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,77,166,0.65);
+    box-shadow: 0 0 10px rgba(255,77,166,0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tempo-num{
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.tempo-label{
+    font-size: 11px;
+    opacity: 0.85;
+}
+
+.tempo-juntos-frase{
+    font-size: 11px;
+    opacity: 0.9;
+    font-style: italic;
+}
+
+@media (max-width: 480px){
+    .tempo-juntos{
+        padding: 12px 12px 10px;
+    }
+
+    .tempo-juntos-grid{
+        gap: 8px;
+    }
+}
+
+/* ===== MOTIVOS PELOS QUAIS EU TE AMO ===== */
+.motivos-amor{
+    width: min(520px, calc(100vw - 30px));
+    max-width: 520px;
+    margin: 26px auto 0;
+    color: white;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.motivos-amor.visivel{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.motivos-amor h2{
+    font-size: 16px;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
+}
+
+.motivos-sub{
+    font-size: 11px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+}
+
+.motivos-grid{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.motivos-card{
+    position: relative;
+    padding: 10px 10px 9px;
+    border-radius: 12px;
+    background: radial-gradient(circle at top left, rgba(255,77,166,0.3), rgba(0,0,0,0.9));
+    border: 1px solid rgba(255,77,166,0.8);
+    box-shadow:
+        0 0 10px rgba(255,77,166,0.4),
+        0 0 18px rgba(0,0,0,0.9);
+    color: white;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        opacity 0.2s ease;
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.motivos-amor.visivel .motivos-card{
+    animation: motivosFadeIn 0.55s ease forwards;
+}
+
+.motivos-card:nth-child(1){ animation-delay: 0.05s; }
+.motivos-card:nth-child(2){ animation-delay: 0.12s; }
+.motivos-card:nth-child(3){ animation-delay: 0.19s; }
+.motivos-card:nth-child(4){ animation-delay: 0.26s; }
+.motivos-card:nth-child(5){ animation-delay: 0.33s; }
+
+.motivos-card::before{
+    content: "♡";
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 11px;
+    color: #ffb5da;
+    opacity: 0.9;
+}
+
+.motivos-card:hover{
+    transform: translateY(-3px) scale(1.01);
+    border-color: rgba(255,77,166,1);
+    box-shadow:
+        0 0 14px rgba(255,77,166,0.8),
+        0 0 24px rgba(0,0,0,0.9);
+    background: radial-gradient(circle at top left, rgba(255,77,166,0.4), rgba(0,0,0,0.9));
+}
+
+.motivo-frente,
+.motivo-verso{
+    display: block;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.motivo-frente{
+    font-weight: 600;
+}
+
+.motivo-verso{
+    display: none;
+    opacity: 0.95;
+}
+
+.motivos-card.virado .motivo-frente{
+    display: none;
+}
+
+.motivos-card.virado .motivo-verso{
+    display: block;
+}
+
+.motivos-card.virado{
+    transform: translateY(-1px) scale(1.01);
+    box-shadow:
+        0 0 16px rgba(255,77,166,0.9),
+        0 0 26px rgba(0,0,0,1);
+}
+
+@media (max-width: 480px){
+    .motivos-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes motivosFadeIn{
+    0%{
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== CAIXINHA SECRETA ===== */
+.caixinha-secreta{
+    position: relative;
+    width: min(520px, calc(100vw - 30px));
+    max-width: 520px;
+    margin: 24px auto 32px;
+    background: rgba(255, 77, 166, 0.12);
+    border: 1px solid rgba(255, 77, 166, 0.75);
+    border-radius: 16px;
+    padding: 14px 14px 12px;
+    color: white;
+    box-shadow: 0 0 18px rgba(255,77,166,0.35);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.caixinha-secreta.visivel{
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.caixinha-secreta h2{
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.caixinha-sub{
+    font-size: 12px;
+    opacity: 0.85;
+    margin-bottom: 10px;
+}
+
+.caixinha-dica{
+    font-size: 11px;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+.caixinha-form{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.caixinha-form input{
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 77, 166, 0.65);
+    background: rgba(0,0,0,0.35);
+    color: white;
+    outline: none;
+}
+
+.caixinha-form input::placeholder{
+    color: rgba(255,255,255,0.65);
+}
+
+.caixinha-form input:focus{
+    border-color: #ff4da6;
+    box-shadow: 0 0 10px rgba(255,77,166,0.55);
+}
+
+.caixinha-form button{
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 77, 166, 0.75);
+    background: rgba(255, 77, 166, 0.18);
+    color: white;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+
+.caixinha-form button:hover{
+    background: rgba(255, 77, 166, 0.28);
+}
+
+.caixinha-form button:disabled{
+    cursor: default;
+    opacity: 0.65;
+}
+
+.caixinha-msg{
+    margin-top: 8px;
+    min-height: 16px;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.caixinha-msg.erro{
+    color: #ffd1e6;
+}
+
+.caixinha-msg.ok{
+    color: #ffffff;
+}
+
+.caixinha-conteudo{
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 77, 166, 0.35);
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.sr-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@keyframes tremer{
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+}
+
+.caixinha-secreta.tremer{
+    animation: tremer 350ms ease;
+}
